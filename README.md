@@ -4,14 +4,15 @@ This project template is an opinionated fork of the popular [Drupal-composer tem
 
 ## Getting started
 
-- Click "[Use this template](https://github.com/wunderio/drupal-project/generate)" to generate a new project,
-  - select the correct owner,
-  - name the project as `client-COUNTRYCODE-CLIENT-PROJECT`,
-  - make the repository private (unless the project is public).
-- Clone the new project locally and modify it's details:
-  - `composer.json` name,
-  - `silta/silta.yml` [values](https://github.com/wunderio/charts/blob/master/drupal/values.yaml).
-- Log in to [CircleCI](https://app.circleci.com/) using your Github account and add the new project using existing config.
+- Click "[Use this template](https://github.com/wunderio/drupal-project/generate)" to generate a new project
+    - Select correct owner
+    - Name the project as `client-COUNTRYCODE-CLIENT-PROJECT`
+    - Make the repository private (unless the project is public)
+- Clone project and modify project details
+    - `composer.json` name
+    - `silta/silta.yml`
+        - See [values](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) options to override.
+- Log in to CircleCI using your Github account and add the new project using existing config.
 
 For additional instructions, please see the [Silta documentation](https://github.com/wunderio/silta).
 
@@ -26,8 +27,8 @@ For additional instructions, please see the [Silta documentation](https://github
 ### [Services](https://docs.lando.dev/config/services.html)
 
 - `chrome` - uses [selenium/standalone-chrome](https://hub.docker.com/r/selenium/standalone-chrome/) image, uncomment the service definition at `.lando.yml` to enable.
-- `elasticsearch` - available at <http://localhost:9200>. Uses [bitnami/elasticsearch:7](https://github.com/bitnami/bitnami-docker-elasticsearch) image, uncomment the service definition at `.lando.yml` to enable. ES settings file: `.lando/elasticsearch.yml`.
-- `kibana`  - available at <http://localhost:5601>. Uses [bitnami/kibana:7](https://github.com/bitnami/bitnami-docker-kibana) image, uncomment the service definition at `.lando.yml` to enable.
+- `elasticsearch` - uses [blacktop/elasticsearch:7](https://github.com/blacktop/docker-elasticsearch-alpine) image. Uncomment the service and proxy definitions at `.lando.yml` to enable. You can change default ES settings at `.lando/elasticsearch.yml`.
+- `kibana`  - uses [blacktop/kibana:7](https://github.com/blacktop/docker-kibana-alpine) image, uncomment the service and proxy definitions at `.lando.yml` to enable.
 - `mailhog` - uses Lando [MailHog service](https://docs.lando.dev/config/mailhog.html).
 - `node` - uses Lando [Node service](https://docs.lando.dev/config/node.html).
 
@@ -39,7 +40,35 @@ For additional instructions, please see the [Silta documentation](https://github
 - `lando xdebug-on`, `lando xdebug-off` - enable / disable [Xdebug](https://xdebug.org/) for [nginx](https://nginx.org/en/).
 - `lando xdebug-profiler-on`, `lando xdebug-profiler-off` - enable/disable the [Xdebug profiler](https://xdebug.org/docs/profiler). This requires `xdebug-on` to be executed first.
 
+### Elasticsearch and Kibana setup for Lando
+Default ports for Elasticsearch (9200) and Kibana (5601) are changed as follows:
+- Elasticsearch is available on http://localhost:9400
+- Kibana is available on http://localhost:5701
+
 ### Drupal development hints
 
 - [Updating Drupal core](https://www.drupal.org/docs/8/update/update-core-via-composer).
 - [Altering scaffold files](https://www.drupal.org/docs/develop/using-composer/using-drupals-composer-scaffold#toc_4) (`robots.txt`, `.htaccess` etc.).
+
+## Setting up GraphQL server locally
+
+### Requirements
+    - Install Node 12 (either from the site or NVM)
+
+### steps
+
+1. Go to /api directory
+2. Install all project dependencies by running:
+`npm i`
+3. To run the application on your computer, simply run:
+`npm run dev`
+
+### Query examples
+
+[doc](https://docs.google.com/document/d/15fClrlKNWVwYhh10e00EG1VxjHwJOyjK922R1w-9_sI/edit#) 
+
+## Setting up the NextJS / React front end locally
+
+1. Go to the NextJS app folder: `cd sites/test`
+2. Install the NPM packages: `npm install`
+3. Run the NextJS app in development mode: `npm run dev`

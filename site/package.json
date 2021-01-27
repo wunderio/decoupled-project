@@ -5,14 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "start": "next start"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
     "babel-plugin-transform-require-ignore": "^0.1.1",
-    "elemental-ui": "git+https://a14df71f3d67b3539bf581c1625dbeb58fb31472:x-oauth-basic@github.com/fortum/elemental-ui.git#v0.11.0",
     "graphql": "^15.3.0",
     "next": "9.5.3",
     "next-transpile-modules": "^4.1.0",
@@ -26,10 +23,6 @@
   "devDependencies": {
     "styled-components": "^5.2.0",
     "@babel/core": "^7.11.6",
-    "@storybook/addon-actions": "^6.0.21",
-    "@storybook/addon-essentials": "^6.0.21",
-    "@storybook/addon-links": "^6.0.21",
-    "@storybook/react": "^6.0.21",
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.11.1",
     "dotenv": "^8.2.0",

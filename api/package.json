@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.9.1",
+    "apollo-server": "^2.18.0",
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "dev": "nodemon -w src src",
+    "start": "node src",
+    "build": "echo 'No build command specified in package.json'"
+  },
+  "name": "decoupled-project",
+  "description": "This project template is an opinionated fork of the popular [Drupal-composer template](https://github.com/drupal-composer/drupal-project), configured to automatically deploy code to a [Kubernetes](https://kubernetes.io/) cluster using [CircleCI](https://circleci.com/). Everything that works with the Drupal-composer project template will work with this repository, so we won't duplicate the documentation here.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wunderio/decoupled-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wunderio/decoupled-project/issues"
+  },
+  "homepage": "https://github.com/wunderio/decoupled-project#readme"
+}

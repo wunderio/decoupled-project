@@ -1,0 +1,16 @@
+
+# Values in this file override the default values of our helm chart.
+#
+# See https://github.com/wunderio/charts/blob/master/frontend/values.yaml
+# for all possible options.
+#
+#
+projectName: "decoupled-test"
+
+services:
+  node:
+    exposedRoute: '/'
+    port: 3000
+    env:
+      GRAPHQL_API_BASE_URL: https://<|graphql_api_base_url|>
+

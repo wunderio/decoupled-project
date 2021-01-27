@@ -59,36 +59,38 @@ services:
   #     volumes:
   #       - /dev/shm:/dev/shm
   #     command: /opt/bin/entry_point.sh
-  # elasticsearch:
-  #   type: compose
-  #   services:
-  #     image: bitnami/elasticsearch:7
-  #     command: /opt/bitnami/scripts/elasticsearch/entrypoint.sh /opt/bitnami/scripts/elasticsearch/run.sh
-  #     ports:
-  #       - "9200:9200"
-  #       - "9300:9300"
-  #     volumes:
-  #       - ./.lando/elasticsearch.yml:/opt/bitnami/elasticsearch/config/elasticsearch.yml
-  #       - elasticsearch_data:/bitnami/elasticsearch/data
-  #   volumes:
-  #     elasticsearch_data:
-  #   overrides:
-  #     environment:
-  #       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-  #       # Install plugins.
-  #       ELASTICSEARCH_PLUGINS: "analysis-icu"
-  # kibana:
-  #   type: compose
-  #   services:
-  #     image: bitnami/kibana:7
-  #     ports:
-  #       - "5601:5601"
-  #     depends_on:
-  #       - elasticsearch
-  #     command: /app-entrypoint.sh /run.sh
-  #   overrides:
-  #     environment:
-  #       KIBANA_ELASTICSEARCH_URL: "http://elasticsearch:9200"
+  elasticsearch:
+    type: compose
+    meUser: elasticsearch
+    ssl: true
+    sslExpose: false
+    services:
+      image: blacktop/elasticsearch:7
+      command: /elastic-entrypoint.sh elasticsearch
+      ports:
+        - "9400:9400"
+        - "9500:9500"
+      volumes:
+        - ./.lando/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    run_as_root:
+      # Install `analysis-icu` plugin after ES service boots up
+      - elasticsearch-plugin install analysis-icu
+    overrides:
+      environment:
+        JAVA_HOME: /usr/lib/jvm/default-jvm
+        ES_JAVA_OPTS: -Xms512m -Xmx512m
+  kibana:
+    type: compose
+    meUser: kibana
+    services:
+      image: blacktop/kibana:7
+      command: /docker-entrypoint.sh kibana
+      ports:
+        - "5701:5701"
+      volumes:
+        - ./.lando/kibana.yml:/usr/share/kibana/config/kibana.yml
+      depends_on:
+        - elasticsearch
   mailhog:
     type: mailhog
     hogfrom:

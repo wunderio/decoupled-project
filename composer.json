@@ -1,5 +1,5 @@
 {
-    "name": "wunderio/drupal-project",
+    "name": "wunderio/decoupled-project",
     "description": "Wunder's template for Drupal 9 projects.",
     "type": "project",
     "license": "GPL-2.0-or-later",
@@ -15,15 +15,19 @@
         }
     ],
     "require": {
+        "php": ">=7.3",
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
         "drupal/admin_toolbar": "^2.4",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-recommended": "^9.1",
+        "drupal/elasticsearch_helper": "7.x-dev",
+        "drupal/elasticsearch_helper_index_management": "7.x-dev",
         "drupal/monolog": "^2.0@beta",
         "drupal/simplei": "^1.2",
         "drupal/warden": "^3.0@RC",
         "drush/drush": "^10.3",
+        "elasticsearch/elasticsearch": "~7.0",
         "vlucas/phpdotenv": "^5.2",
         "webflo/drupal-finder": "^1.2",
         "wunderio/drupal-ping": "^1.0"
@@ -31,6 +35,7 @@
     "require-dev": {
         "drupal/core-dev": "^9.1",
         "wunderio/code-quality": "^2.0"
+        "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "conflict": {
         "drupal/drupal": "*"

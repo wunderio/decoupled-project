@@ -13,8 +13,12 @@
 /web/profiles/.gitignore
 /web/profiles/contrib/
 /web/libraries/
+/web/sites/default/default.*
+/web/sites/example.*
 /web/sites/.gitignore
-/web/sites/default/.gitignore
+/web/*/README.txt
+/web/*.*
+!/web/.dockerignore
 
 # Ignore local configuration
 /web/sites/*/settings.local.php
@@ -33,3 +37,7 @@
 
 # Ignore node modules
 node_modules
+
+# Ignore sql dumps.
+/*.sql
+/*.sql.gz

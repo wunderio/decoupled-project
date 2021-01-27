@@ -1,0 +1,40 @@
+
+exposeDomains:
+  prod:
+    hostname: www.100kysymysta.fi
+    ssl:
+      enabled: true
+      issuer: custom
+      key: |
+        <|key|>
+      crt: |
+        <|certificate|>
+      ca: |
+        <|ssl_ca|>
+  prod-non-www:
+    hostname: 100kysymysta.fi
+    ssl:
+      enabled: true
+      issuer: custom
+      key: |
+        <|key|>
+      crt: |
+        <|certificate|>
+      ca: |
+        <|ssl_ca|>
+
+nginx:
+  basicauth:
+    enabled: false
+  redirects:
+    - description: 'Redirect all traffic to www.'
+      from: '~://100kysymysta.fi'
+      to:  https://www.100kysymysta.fi$request_uri
+    - description: 'Redirect Silta domain to actual domain.'
+      from: '~://production.fortum-camp-test.finland.wdr.io'
+      to:  https://www.100kysymysta.fi$request_uri
+
+services:
+  node:
+    env:
+      GRAPHQL_API_BASE_URL: https://api.fortumcamp.wdr.io

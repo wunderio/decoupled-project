@@ -1,0 +1,19 @@
+# Values in this file override the default values of our helm chart.
+#
+# See https://github.com/wunderio/charts/blob/master/frontend/values.yaml
+# for all possible options.
+#
+#
+
+projectName: "decoupled-api"
+
+services:
+  node:
+    exposedRoute: '/'
+    port: 4000
+    env:
+      ELASTICSEARCH_HOST: http://<|elasticsearch_host|>:9200
+
+nginx:
+  basicauth:
+    enabled: false

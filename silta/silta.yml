@@ -3,3 +3,18 @@
 #
 # See https://github.com/wunderio/charts/blob/master/drupal/values.yaml
 # for all possible options.
+#
+nginx:
+  #  basicauth:
+  #  # Define username and password
+  #  enabled: true
+  #  credentials:
+  #    username: wunder
+  #    password: headless
+
+  extra_headers:
+    X-Frame-Options: SAMEORIGIN
+    X-Content-Type-Options: nosniff
+    Strict-Transport-Security: max-age=31536000
+    X-XSS-Protection: "'1; mode=block'"
+    Cache-Control: public

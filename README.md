@@ -69,6 +69,6 @@ Default ports for Elasticsearch (9200) and Kibana (5601) are changed as follows:
 
 ## Setting up the NextJS / React front end locally
 
-1. Go to the NextJS app folder: `cd sites/test`
+1. Go to the NextJS app folder: `cd site`
 2. Install the NPM packages: `npm install`
 3. Run the NextJS app in development mode: `npm run dev`

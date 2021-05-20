@@ -2,45 +2,32 @@ name: silta
 recipe: drupal9
 
 config:
-  php: '7.3'
+  php: "7.3"
   via: nginx
   webroot: web
-  database: mariadb:10.3
-  xdebug: false
+  database: "mariadb:10.3"
+  xdebug: off
+  config:
+    php: .lando/php.ini
 
 tooling:
   grumphp:
-    description: Runs grumphp commands
+    description: "Runs grumphp commands"
     cmd:
       - appserver: ./vendor/bin/grumphp
   npm:
-    description: Runs npm commands
+    description: "Runs npm commands"
     service: node
-  xdebug-on:
-    service: appserver
-    description: Enables xdebug for nginx
-    cmd: docker-php-ext-enable xdebug && pkill -o -USR2 php-fpm
-    user: root
-  xdebug-off:
-    service: appserver
-    description: Disables xdebug for nginx
-    cmd: rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && pkill -o -USR2 php-fpm
-    user: root
-  xdebug-profiler-on:
-    service: appserver
-    description: Enable xdebug profiler.
-    cmd: echo "xdebug.profiler_enable = 1\\nxdebug.profiler_output_dir = /app" >> /usr/local/etc/php/conf.d/xxx-lando-default.ini && pkill -o -USR2 php-fpm
-    user: root
-  xdebug-profiler-off:
-    service: appserver
-    description: Disable xdebug profiler.
-    cmd: pkill -o -USR2 php-fpm && cp /usr/local/etc/php/conf.d/xxx-lando-default.ini /tmp/lando.ini && sed -i '/xdebug\.profiler/d' /tmp/lando.ini && cp /tmp/lando.ini /usr/local/etc/php/conf.d/xxx-lando-default.ini
+  xdebug:
+    description: "Loads Xdebug in the selected mode"
+    cmd:
+      - appserver: /app/.lando/xdebug.sh
     user: root
 
 services:
   appserver:
     build:
-      - composer install
+      - "composer install"
     overrides:
       environment:
         HASH_SALT: notsosecurehash
@@ -49,6 +36,10 @@ services:
         DB_USER_DRUPAL: drupal9
         DB_PASS_DRUPAL: drupal9
         DB_HOST_DRUPAL: database
+        # Support debugging with XDEBUG 3.
+        XDEBUG_MODE:
+        # Support debugging Drush with XDEBUG 3.
+        PHP_IDE_CONFIG: serverName=appserver
   # chrome:
   #   type: compose
   #   services:
@@ -59,57 +50,48 @@ services:
   #     volumes:
   #       - /dev/shm:/dev/shm
   #     command: /opt/bin/entry_point.sh
-  elasticsearch:
-    type: compose
-    meUser: elasticsearch
-    ssl: true
-    sslExpose: false
-    services:
-      image: blacktop/elasticsearch:7
-      command: /elastic-entrypoint.sh elasticsearch
-      ports:
-        - "9400:9400"
-        - "9500:9500"
-      volumes:
-        - ./.lando/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    run_as_root:
-      # Install `analysis-icu` plugin after ES service boots up
-      - elasticsearch-plugin install analysis-icu
-    overrides:
-      environment:
-        JAVA_HOME: /usr/lib/jvm/default-jvm
-        ES_JAVA_OPTS: -Xms512m -Xmx512m
-  kibana:
-    type: compose
-    meUser: kibana
-    services:
-      image: blacktop/kibana:7
-      command: /docker-entrypoint.sh kibana
-      ports:
-        - "5701:5701"
-      volumes:
-        - ./.lando/kibana.yml:/usr/share/kibana/config/kibana.yml
-      depends_on:
-        - elasticsearch
+  # elasticsearch:
+  #   type: "elasticsearch:7.12.0"
+  #   # Replace `true` with `9200` for proxy http://localhost:9200.
+  #   portforward: true
+  #   overrides:
+  #     environment:
+  #       ELASTICSEARCH_HEAP_SIZE: 1024m
+  #       # Comma, semi-colon or space separated list of plugins to install at initialization.
+  #       ELASTICSEARCH_PLUGINS: analysis-icu
+  #     volumes:
+  #       # Extend the default configuration with custom settings like
+  #       # allowing CORS requests at `.lando/my_elasticsearch.yml`.
+  #       # @see: https://github.com/bitnami/bitnami-docker-elasticsearch#configuration-file.
+  #       - "./.lando/my_elasticsearch.yml:/opt/bitnami/elasticsearch/config/my_elasticsearch.yml"
+  # kibana:
+  #   type: compose
+  #   ssl: true
+  #   sslExpose: false
+  #   services:
+  #     image: "bitnami/kibana:7.12.0"
+  #     command: "/opt/bitnami/scripts/kibana/entrypoint.sh /opt/bitnami/scripts/kibana/run.sh"
   mailhog:
     type: mailhog
     hogfrom:
       - appserver
   node:
-    type: node
+    type: "node:12"
     build:
-      - npm install
+      - "npm install"
 
 proxy:
   mailhog:
     - mail-silta.lndo.site
+  # kibana:
+  #   - "kibana-silta.lndo.site:5601"
 
 events:
   post-db-import:
-    - appserver: cd $LANDO_WEBROOT && drush cache:rebuild -y && drush @local user:login
+    - appserver: "cd $LANDO_WEBROOT && drush cache:rebuild -y && drush @local user:login"
 
 env_file:
   - .lando/.env
 
 # Tested with Lando version
-version: v3.0.23
+version: v3.1.4

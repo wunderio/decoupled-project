@@ -33,7 +33,9 @@ workflows:
           context: silta_dev
           filters:
             branches:
-              ignore: production
+              ignore:
+                - production
+                - /dependabot\/.*/
 
       - silta/drupal-build-deploy:
           # Extend the build-deploy configuration for the production environment.
@@ -45,7 +47,16 @@ workflows:
             branches:
               only: production
 
-      - silta/frontend-build-deploy: &build-deploy
+      - silta/drupal-build-deploy:
+          <<: *build-deploy
+          name: build-dependabot
+          context: silta_dev
+          skip-deployment: true
+          filters:
+            branches:
+              only: /dependabot\/.*/
+
+      - silta/frontend-build-deploy: &api-build-deploy
           name: API build & deploy
           context: silta_dev
           silta_config: silta/silta.yml,silta/silta-api.yml
@@ -67,17 +78,28 @@ workflows:
                 docker-hash-prefix: v6
           filters:
             branches:
-              ignore: production
+              ignore:
+                - production
+                - /dependabot\/.*/
 
       - silta/frontend-build-deploy:
           # Extend the build-deploy configuration for the production environment.
-          <<: *build-deploy
+          <<: *api-build-deploy
           name: API build & deploy production
           context: silta_finland
           silta_config: silta/silta.yml,silta/silta-api.yml,silta/silta-api-prod.yml
           filters:
             branches:
               only: production
+
+      - silta/frontend-build-deploy:
+          <<: *api-build-deploy
+          name: API build Dependabot
+          context: silta_dev
+          skip-deployment: true
+          filters:
+            branches:
+              only: /dependabot\/.*/
 
       - silta/frontend-build-deploy: &client-build-deploy
           name: Frontend build & deploy for test
@@ -109,7 +131,9 @@ workflows:
                 docker-hash-prefix: v6
           filters:
             branches:
-              ignore: production
+              ignore:
+                - production
+                - /dependabot\/.*/
 
       - silta/frontend-build-deploy:
           # Extend the build-deploy configuration for the production environment.
@@ -126,3 +150,12 @@ workflows:
           filters:
             branches:
               only: production
+
+      - silta/frontend-build-deploy:
+          <<: *client-build-deploy
+          name: Client build Dependabot
+          context: silta_dev
+          skip-deployment: true
+          filters:
+            branches:
+              only: /dependabot\/.*/

@@ -26,7 +26,7 @@
         "drupal/simplei": "^1.2",
         "drupal/warden": "^3.0@RC",
         "drush/drush": "^10.3",
-        "elasticsearch/elasticsearch": "~7.0",
+        "elasticsearch/elasticsearch": "~8.1",
         "vlucas/phpdotenv": "^5.2",
         "webflo/drupal-finder": "^1.2",
         "wunderio/drupal-ping": "^1.0"

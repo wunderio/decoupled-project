@@ -23,7 +23,7 @@
         "drupal/elasticsearch_helper": "7.x-dev",
         "drupal/elasticsearch_helper_index_management": "7.x-dev",
         "drupal/monolog": "^2.0@beta",
-        "drupal/simplei": "^1.2",
+        "drupal/simplei": "^2.1",
         "drupal/warden": "^3.0@RC",
         "drush/drush": "^10.3",
         "elasticsearch/elasticsearch": "~7.0",
